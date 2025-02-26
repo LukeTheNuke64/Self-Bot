@@ -32,5 +32,6 @@ async def spam(ctx, name):
     for _ in range (30):
         await ctx.send(f"{name}")
 
-        
+# pip install discord.py==1.7.3
+# https://www.python.org/downloads/release/python-3110/        
 bot.run(TOKEN, bot=False) 
