@@ -1,37 +1,39 @@
-import discord, asyncio, random
+import discord
 from discord.ext import commands
 
+# if you want no prefix leave the string empty
 bot = commands.Bot(command_prefix='>', intents=discord.Intents.all(), self_bot=True)
 
 
-TOKEN = "MTAwODA5NzgxMjk0NjM2MjQ3OA.GsEdP_.vFZdXpxuZXBcnO8baF9uhVJ1AW8YR5dnAVCOtE"
+TOKEN = "Discord account token here"
+SPAMMED_MESSAGE = "Message here"
 
 @bot.event
 async def on_ready():
-    print(f"{bot.user.name} is now online")
+    print(f"{bot.user.name} connected to discord") # change status and activity below
+    await bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name=""))
 
-@bot.command()
+@bot.command() # test if the bot is working
 async def ping(ctx):
     await ctx.send("pong")
 
 
-@bot.command()
-async def hi(ctx, *, message: str="@everyone hi"):
+@bot.command() # sends a message in all channels within every server that the Discord account is in
+async def spam(ctx): 
     for guild in bot.guilds:
         for channel in guild.text_channels:
             try:
-                await channel.send(message)
+                await channel.send(SPAMMED_MESSAGE)
                 print(f"Message sent to {channel.name} in {guild.name}")
             except discord.Forbidden:
                 pass
             except discord.HTTPException:
                 pass
 
-@bot.command()
-async def spam(ctx, name):
+@bot.command() # funny to spam people
+async def spam(ctx, message):
     for _ in range (30):
-        await ctx.send(f"{name}")
+        await ctx.send(f"{message}")
 
-# pip install discord.py==1.7.3
-# https://www.python.org/downloads/release/python-3110/        
+# REMEMBER TO - pip install discord.py==1.7.3 and use https://www.python.org/downloads/release/python-3110/     
 bot.run(TOKEN, bot=False) 
